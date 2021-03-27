@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { GET_RESULTS, QueryObj, GET_ALL_LANDLORDS} from './Utils'
 
 
-
 function SearchResult ( props: QueryObj | any | undefined ){
   // console.log(props.location.state.query)
   const { loading, data } = useQuery<any, QueryObj>(
@@ -22,7 +21,10 @@ function SearchResult ( props: QueryObj | any | undefined ){
   if (data) {
     console.log('server response:',  data)
     return (
-      <div>Data received</div>
+      <div>
+        Data received <br />
+        {JSON.stringify(data)}
+      </div>
     )
   }
 

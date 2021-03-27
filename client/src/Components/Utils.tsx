@@ -7,7 +7,7 @@ export const TEST_QUERY = gql`
 `
 
 export const GET_RESULTS = gql`
-  query ($city: String, $street: String, $zipcode: String ) {
+  query get_landlords($city: String, $street: String, $zipcode: String ) {
     getResults (city: $city, street: $street, zipcode: $zipcode){
       name
       id
