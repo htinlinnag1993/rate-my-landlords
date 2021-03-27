@@ -2,11 +2,14 @@ const express = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
 const mongoose = require('mongoose')
 require('dotenv').config()
+const Landlords = require('./models/Landlords')
+const Users = require('./models/Users')
+const RealEstateProperty = require('./models/RealEstateProperty')
+const Reviews = require('./models/Reviews')
 
 /* DATABASE CONNECTION */
-//process.env.DB_CONNECTION_STRING, 
 mongoose.connect(
-  "mongodb+srv://Apierre1:Annasophiaasdf1!1@cluster0.w8xvq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",  
+  process.env.DB_CONNECTION_STRING,  
   {useNewUrlParser: true, useUnifiedTopology: true }, 
   () => console.log('connected to db')
 )
@@ -32,7 +35,8 @@ const typeDefs = gql`
   type Query {
     getResults(city: String, street: String, zipcode: String): [Landlord]
     hello: String, 
-    getAllLandlords(id: String): [Landlord]
+    getAllLandlords(id: String): [Landlord], 
+    dummyQuery: String
   }
 `;
  
@@ -57,7 +61,17 @@ const resolvers = {
       street: 'street', 
       zipcode: 'zipcode'
     }],
-    hello: () => 'hello'
+    hello: () => 'hello', 
+    dummyQuery: async () => {
+      try {
+        const data = await RealEstateProperty.find({})
+        console.log(data)
+      }catch(err) {
+        console.log(err)
+      }
+      
+      return 'hello'
+    }
   },
 };
  

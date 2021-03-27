@@ -14,7 +14,7 @@ function SearchBar (){
     zipcode: string;
   }
 
-  const [query, setQuery] = useState<QueryObj| undefined> (undefined)
+  // const [query, setQuery] = useState<QueryObj| undefined> (undefined)
   let history = useHistory()
 
   const HandleClick = async (event: Object) => {
@@ -27,8 +27,8 @@ function SearchBar (){
         zipcode: searchInputRef.current['zipSearchBar'].value
       };
 
-      await setQuery(queryObj);
-      console.log(query)
+      // await setQuery(queryObj);
+      // console.log(query)
       history.push({
         pathname: "/searchresults",
         state: {
