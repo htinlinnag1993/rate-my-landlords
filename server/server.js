@@ -39,6 +39,13 @@ const typeDefs = gql`
     transactionsIssues: Int
   }
 
+  type PropertyStats {
+    cleanliness: Int
+    noiseLevel: Int 
+    commonPropertyIssues: [String]
+    commonNeighborTrais: [String]
+  }
+
   type LandlordReview {
     wouldRentAgain: Boolean
     friendlinessRating: Int
@@ -68,6 +75,7 @@ const typeDefs = gql`
 
   type FullLandLordProfile {
     LandlordStats: LandlordStats 
+    PropertyStats: PropertyStats
     LandlordReviews: [LandlordReview]
     PropertyReviews: [PropertyReview]
   }
