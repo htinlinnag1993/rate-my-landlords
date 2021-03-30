@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+const ObjectId = mongoose.Schema.ObjectId
 
 const options = {
   timestamps: true, 
@@ -18,6 +18,7 @@ const LandlordsSchema = new mongoose.Schema({
   maintenanceRating: Number, 
   responsivenessRating: Number, 
   transactionIssue: Number,
+  reviews:[{type: ObjectId, ref: 'Reviews'}],
 }, options)
 
 module.exports = mongoose.model('landlords', LandlordsSchema)

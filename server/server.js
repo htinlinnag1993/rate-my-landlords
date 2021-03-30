@@ -6,6 +6,7 @@ const Landlords = require('./models/Landlords')
 const Users = require('./models/Users')
 const RealEstateProperty = require('./models/RealEstateProperty')
 const Reviews = require('./models/Reviews')
+const { findLandlordsByAddress, findLandordById } = require('./controllers/landlords')
 
 /* DATABASE CONNECTION */
 mongoose.connect(
@@ -17,61 +18,78 @@ mongoose.connect(
 const db = mongoose.connection 
 
 const typeDefs = gql`
-  type Landlord {
+  type LandlordSearchResult {
     name: String 
-    id: String 
+    id: ID 
+    street: String 
     city: String 
     state: String 
-    street: String 
     zipcode: String
   }
 
-  input AddressObj{
+  type LandlordStats {
+    name: String
+    overallRating: Int 
+    wouldRentAgainLevel: Int 
+    tags: [String]
+    friendlinessRating: Int 
+    communicationRating: Int 
+    maintenanceRating: Int
+    responsivenessRating: Int
+    transactionsIssues: Int
+  }
+
+  type LandlordReview {
+    wouldRentAgain: Boolean
+    friendlinessRating: Int
+    communicationRating: Int 
+    responsivenessRating: Int
+    maintenanceRating: Int
+    transactionIssues: Boolean 
+  }
+
+  type PropertyReview {
+    moveInDate: String
+    moveOutDate: String
+    cleanliness: Int
+    neighborsVibes: [String]
+    propertyIssues: [String]
+    noiseLevelRating: Int
+    user: String
+  }
+
+  type User {
+    name: String
+    username: String
+    email: String
+    DOB: String
+    properties: [ID]
+  }
+
+  type FullLandLordProfile {
+    LandlordStats: LandlordStats 
+    LandlordReviews: [LandlordReview]
+    PropertyReviews: [PropertyReview]
+  }
+
+  input Address {
     street: String, 
     city: String, 
+    state: String, 
     zipcode: String
   }
-
   type Query {
-    getResults(city: String, street: String, zipcode: String): [Landlord]
     hello: String, 
-    getAllLandlords(id: String): [Landlord], 
-    dummyQuery: String
+    findLandlordsByAddress(address: Address): [LandlordSearchResult], 
+    findLandordById(id: ID) : FullLandLordProfile
   }
 `;
  
 const resolvers = {
   Query: {
-    getResults: (__, args, context) => {
-      console.log(args)
-      return [{
-      name: 'test test', 
-      id: '12345', 
-      city: args.city, 
-      state: 'test', 
-      street: args.address, 
-      zipcode: args.zipcode, 
-      message: 'Got results!'
-    }]},
-    getAllLandlords: (__, args, context) => [{
-      name: 'name', 
-      id: args.id, 
-      city: 'city', 
-      state: 'state', 
-      street: 'street', 
-      zipcode: 'zipcode'
-    }],
+    findLandlordsByAddress,
+    findLandordById,
     hello: () => 'hello', 
-    dummyQuery: async () => {
-      try {
-        const data = await RealEstateProperty.find({})
-        console.log(data)
-      }catch(err) {
-        console.log(err)
-      }
-      
-      return 'hello'
-    }
   },
 };
  
@@ -79,7 +97,10 @@ const server = new ApolloServer({
   typeDefs, 
   resolvers, 
   context:  {
-    db
+    Landlords, 
+    Users, 
+    RealEstateProperty, 
+    Reviews,
   }
 });
  
