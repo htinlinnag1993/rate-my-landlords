@@ -88,7 +88,9 @@ const typeDefs = gql`
   }
   type Query {
     hello: String, 
-    findLandlordsByAddress(address: Address): [LandlordSearchResult], 
+    findLandlordsByAddress(street: String, city: String, state: String, zipcode: String): [LandlordSearchResult],
+    # findLandlordsByAddress(address: Address): [LandlordSearchResult],
+    # findLandlordsByAddress(input: Address): [LandlordSearchResult],
     findLandordById(id: ID) : FullLandLordProfile
   }
 `;

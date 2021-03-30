@@ -5,12 +5,13 @@ import { GET_RESULTS, QueryObj, GET_ALL_LANDLORDS} from './Utils'
 
 
 function SearchResult ( props: QueryObj | any | undefined ){
-  // console.log(props.location.state.query)
-  const { loading, data } = useQuery<any, QueryObj>(
+  console.log(props.location.state.query)
+  const { loading, data, error } = useQuery<any, QueryObj>(
     GET_RESULTS,
     {variables: props.location.state.query}
   );
 
+  console.log(data)
   
   if (loading) {
     return (
@@ -24,6 +25,7 @@ function SearchResult ( props: QueryObj | any | undefined ){
       <div>
         Data received <br />
         {JSON.stringify(data)}
+        {JSON.stringify(error)}
       </div>
     )
   }
